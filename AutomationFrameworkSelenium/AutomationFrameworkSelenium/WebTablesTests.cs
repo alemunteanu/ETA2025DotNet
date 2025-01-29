@@ -121,7 +121,6 @@ namespace AutomationFrameworkSelenium
 
         private void StoreRowsAsObjects(IWebDriver driver)
         {
-
             //Identify the headers table
             IList<IWebElement> headers = driver.FindElements(By.XPath("//div[@class='rt-resizable-header-content' and not(text()='Action')]"));
 
@@ -148,7 +147,6 @@ namespace AutomationFrameworkSelenium
 
                 // Map the dictionary to the TableRow class
                 TableRow tableRow = MapDictionaryToTableRow(valuesRow);
-
 
                 tableData.Add(valuesRow);
             }
@@ -181,7 +179,6 @@ namespace AutomationFrameworkSelenium
 
             return tableRow;
         }
-
 
         [TearDown]
         public void CloseBrowser()
