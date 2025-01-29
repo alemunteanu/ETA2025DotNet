@@ -29,7 +29,6 @@ namespace AutomationFrameworkSelenium
 
             Assert.That(driver.Url.EndsWith("text-box"));
 
-
             CompleteFullName(driver, "Alexandra Munteanu");
             CompleteEmail(driver, "alexandra.munteanu@mail.com");
             CompleteCurrentAddress(driver, "strada George Emil Palade");
@@ -40,7 +39,6 @@ namespace AutomationFrameworkSelenium
 
             //Assert that the form has been successfully submitted
             Assert.That(driver.FindElement(By.Id("output")).Displayed);
-
         }
 
         private static void CompleteFullName(IWebDriver driver, string fullName)

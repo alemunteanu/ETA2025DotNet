@@ -8,7 +8,7 @@ namespace AutomationFrameworkSelenium
         IWebDriver driver;
 
         [Test]
-        public void TestSortable()
+        public void InteractionPageTest()
         {
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
@@ -30,6 +30,17 @@ namespace AutomationFrameworkSelenium
             Assert.That(driver.FindElement(By.Id("demo-tab-grid")).GetAttribute("aria-selected").Equals("false"));
 
             GetValuesFromSortableList(driver);
+
+            ClickOnOption(driver, "Selectable");
+
+            Assert.That(driver.Url.EndsWith("selectable"));
+
+            ClickOnTabWithName(driver, "Grid");
+
+            Assert.That(driver.FindElement(By.Id("demo-tab-list")).GetAttribute("aria-selected").Equals("false"));
+            Assert.That(driver.FindElement(By.Id("demo-tab-grid")).GetAttribute("aria-selected").Equals("true"));
+
+            SelectOddCells(driver);
         }
 
         private void ClickOnOption(IWebDriver driver, string desiredOption)
@@ -60,6 +71,44 @@ namespace AutomationFrameworkSelenium
                 Console.WriteLine(string.Format("\t{0}", optionValue));
             }
             return stringValues;
+        }
+
+        private void ClickOnTabWithName(IWebDriver driver, string tabName)
+        {
+            IWebElement tab = driver.FindElements(By.XPath("//a[@role='tab']")).ToList().FirstOrDefault(tab => tab.Text.Equals(tabName));
+            if (tab != null)
+            {
+                ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", tab);
+                tab.Click();
+                Console.WriteLine("Tab is selected successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Tab not found");
+            }
+        }
+
+        private void SelectOddCells(IWebDriver driver)
+        {
+            List<IWebElement> listOfCells = driver.FindElements(By.XPath("//div[@id='gridContainer']//li")).ToList();
+            List<Dictionary<int, IWebElement>> resultList = listOfCells.Select((cell, index) => new Dictionary<int, IWebElement> { { index + 1, cell } }).ToList()
+                .Where(item => item.Keys.First() % 2 != 0).ToList();
+
+            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", listOfCells.First());
+
+            foreach (var map in resultList)
+            {
+                foreach (var kvp in map)
+                {
+                    Console.WriteLine($"Key: {kvp.Key}, Value: {kvp.Value.Text}");
+                    kvp.Value.Click();
+                    Console.WriteLine($"Cell with value: {kvp.Value.Text} has been clicked!");
+                }
+            }
+
+            resultList.SelectMany(cell => cell.Values)
+                .ToList()
+                .ForEach(value => Assert.True(value.GetAttribute("class").Contains("active")));
         }
 
         [TearDown]
