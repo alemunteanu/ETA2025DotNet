@@ -4,7 +4,7 @@ using OpenQA.Selenium.Chrome;
 
 namespace AutomationFrameworkSelenium
 {
-    public class WebTablesTests
+    public class WebTablesPageTests
     {
         IWebDriver driver;
 
@@ -21,7 +21,7 @@ namespace AutomationFrameworkSelenium
         }
 
         [Test]
-        public void TestWebTables()
+        public void WebTablesTests()
         {
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();

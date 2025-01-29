@@ -9,7 +9,7 @@ namespace AutomationFrameworkSelenium
         IWebDriver driver;
 
         [Test]
-        public void TestDemoQA()
+        public void TestBoxTests()
         {
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();

@@ -8,7 +8,7 @@ namespace AutomationFrameworkSelenium
         IWebDriver driver;
 
         [Test]
-        public void InteractionPageTest()
+        public void InteractionPageTests()
         {
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
