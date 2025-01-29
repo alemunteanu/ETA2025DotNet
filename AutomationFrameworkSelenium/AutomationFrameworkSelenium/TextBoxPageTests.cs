@@ -3,7 +3,7 @@ using OpenQA.Selenium.Chrome;
 
 namespace AutomationFrameworkSelenium
 {
-    public class TextBoxTest
+    public class TextBoxPageTests
 
     {
         IWebDriver driver;

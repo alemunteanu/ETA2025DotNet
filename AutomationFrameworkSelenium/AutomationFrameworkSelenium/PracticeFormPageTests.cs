@@ -4,7 +4,7 @@ using OpenQA.Selenium.Interactions;
 
 namespace AutomationFrameworkSelenium
 {
-    public class PracticeFormTest
+    public class PracticeFormPageTests
     {
         IWebDriver driver;
 
