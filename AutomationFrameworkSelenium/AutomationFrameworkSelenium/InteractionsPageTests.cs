@@ -40,7 +40,9 @@ namespace AutomationFrameworkSelenium
             Assert.That(driver.FindElement(By.Id("demo-tab-list")).GetAttribute("aria-selected").Equals("false"));
             Assert.That(driver.FindElement(By.Id("demo-tab-grid")).GetAttribute("aria-selected").Equals("true"));
 
-            SelectOddCells(driver);
+            //SelectOddCells(driver);
+
+            SelectOddCellsWithRepetitiveStructures(driver);
         }
 
         private void ClickOnOption(IWebDriver driver, string desiredOption)
@@ -91,8 +93,11 @@ namespace AutomationFrameworkSelenium
         private void SelectOddCells(IWebDriver driver)
         {
             List<IWebElement> listOfCells = driver.FindElements(By.XPath("//div[@id='gridContainer']//li")).ToList();
-            List<Dictionary<int, IWebElement>> resultList = listOfCells.Select((cell, index) => new Dictionary<int, IWebElement> { { index + 1, cell } }).ToList()
-                .Where(item => item.Keys.First() % 2 != 0).ToList();
+            List<Dictionary<int, IWebElement>> resultList = listOfCells
+                .Select((cell, index) => new Dictionary<int, IWebElement> { { index + 1, cell } })
+                .ToList()
+                .Where(item => item.Keys.First() % 2 != 0)
+                .ToList();
 
             ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", listOfCells.First());
 
@@ -109,6 +114,21 @@ namespace AutomationFrameworkSelenium
             resultList.SelectMany(cell => cell.Values)
                 .ToList()
                 .ForEach(value => Assert.True(value.GetAttribute("class").Contains("active")));
+        }
+
+        private void SelectOddCellsWithRepetitiveStructures(IWebDriver driver)
+        {
+            List<IWebElement> listOfCells = driver.FindElements(By.XPath("//div[@id='gridContainer']//li")).ToList();
+            int index = 0;
+            int selectedCellsCounter = 0;
+            while (index <= listOfCells.Count)
+            {
+                listOfCells[index].Click();
+                index += 2;
+                selectedCellsCounter++;
+            }
+            Console.WriteLine($"\nThe number of selected cells is: {selectedCellsCounter}");
+            Assert.That(listOfCells.Where(cell => cell.GetAttribute("class").Contains("active")).ToList().Count.Equals(5));
         }
 
         [TearDown]
