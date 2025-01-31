@@ -24,6 +24,7 @@ namespace AutomationFrameworkSelenium
         public void WebTablesTests()
         {
             driver = new ChromeDriver();
+
             driver.Manage().Window.Maximize();
 
             driver.Navigate().GoToUrl("https://demoqa.com");
